@@ -10,6 +10,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class AuthTest {
+
     @BeforeEach
     void setup() {
         open("http://localhost:9999");
@@ -18,7 +19,6 @@ public class AuthTest {
     @Test
     void shouldAuthIfUserExistAndStatusActive() {
         DataGenerator.UserInfo user = DataGenerator.Registration.generateUser("en", "active");
-
         $("[name=login]").setValue(user.getLogin());
         $("[name=password]").setValue(user.getPassword());
         $(byText("Продолжить")).click();
@@ -37,7 +37,7 @@ public class AuthTest {
     @Test
     void shouldAuthIfUserExistStatusActiveAndLoginWithMistake() {
         DataGenerator.UserInfo user = DataGenerator.Registration.generateUser("en", "active");
-        $("[name=login]").setValue(user.getLogin()+"t");
+        $("[name=login]").setValue(user.getLogin() + "t");
         $("[name=password]").setValue(user.getPassword());
         $(byText("Продолжить")).click();
         $("[data-test-id] .notification__content").shouldHave(text("Ошибка! Неверно указан логин или пароль"));
@@ -46,7 +46,6 @@ public class AuthTest {
     @Test
     void shouldAuthIfUserExistStatusBlocked() {
         DataGenerator.UserInfo user = DataGenerator.Registration.generateUser("en", "blocked");
-
         $("[name=login]").setValue(user.getLogin());
         $("[name=password]").setValue(user.getPassword());
         $(byText("Продолжить")).click();
@@ -56,13 +55,12 @@ public class AuthTest {
     @Test
     void shouldAuthIfUserBlockedAndStatusChangeToActive() {
         DataGenerator.UserInfo user = DataGenerator.Registration.generateUser("en", "blocked");
-
         $("[name=login]").setValue(user.getLogin());
         $("[name=password]").setValue(user.getPassword());
         $(byText("Продолжить")).click();
         $("[data-test-id] .notification__content").shouldHave(text("Ошибка! Пользователь заблокирован"));
 
-        DataGenerator.Registration.manualUser(user.getLogin(),user.getPassword(),"active");
+        DataGenerator.Registration.manualUser(user.getLogin(), user.getPassword(), "active");
 
         $(byText("Продолжить")).click();
         $(".heading").shouldHave(text("  Личный кабинет"));
@@ -81,7 +79,7 @@ public class AuthTest {
         DataGenerator.UserInfo user = DataGenerator.Registration.generateUser("en", "blocked");
 
         $("[name=login]").setValue(user.getLogin());
-        $("[name=password]").setValue(user.getPassword()+"mistake");
+        $("[name=password]").setValue(user.getPassword() + "mistake");
         $(byText("Продолжить")).click();
         $("[data-test-id] .notification__content").shouldHave(text("Ошибка! Неверно указан логин или пароль"));
     }
