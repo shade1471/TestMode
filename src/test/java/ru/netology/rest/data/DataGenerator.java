@@ -55,19 +55,11 @@ public class DataGenerator {
         }
 
         public static UserInfo generateUser(String locale, String status) {
-            UserInfo userGen = new UserInfo(DataGenerator.generateLogin(locale), DataGenerator.generatePassword(locale), status);
-            given() // "дано"
-                    .spec(requestSpec) // указываем, какую спецификацию используем
-                    .body(new Gson().toJson(userGen)) // передаём в теле объект, который будет преобразован в JSON
-                    .when() // "когда"
-                    .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
-                    .then()
-                    .statusCode(200);
-            return userGen;
+            var user = new UserInfo(DataGenerator.generateLogin(locale), DataGenerator.generatePassword(locale), status);
+            return user;
         }
 
-        public static void manualUser(String login, String password, String status) {
-            UserInfo user = new UserInfo(login, password, status);
+        public static void registrationUser(UserInfo user) {
             given() // "дано"
                     .spec(requestSpec) // указываем, какую спецификацию используем
                     .body(new Gson().toJson(user)) // передаём в теле объект, который будет преобразован в JSON
